@@ -47,6 +47,9 @@ def addPatternToTrack(midiFile, track, pattern, time):
         print "NOTE t: %s, p: %s, v: %s, l: %s" % (time + ev.time, getPitch(key[0], key[1], ev.pitch), ev.velocity, ev.length)
         MyMIDI.addNote(track, 0, getPitch(key[0], key[1], ev.pitch), time + ev.time, ev.length, ev.velocity)
 
+
+# ---- All code above here should be in a module ------------------------------------------------------
+
 for k in range(1,11):
     # Create the MIDIFile Object
     MyMIDI = MIDIFile(1)
@@ -64,21 +67,15 @@ for k in range(1,11):
     pat = Pattern([
         Event(0, random.randint(14, 21), random.randint(70, 110), 1),
         Event(1, random.randint(14, 21), random.randint(70, 110), 1),
-        Event(2, random.randint(14, 21), random.randint(70, 110), 2) ])
+        Event(2, random.randint(14, 21), random.randint(70, 110), 1) ])
 
     time = 0
     i = 1
     while time < 11:
-        addPatternToTrack(MyMIDI, track, pat.stretch(1/float(i)), time)
-        time += 4*(1/float(i))
+        stretch = random.choice([0.25, 0.3333, 0.5, 0.75, 1, 2, 3, 4 ])
+        addPatternToTrack(MyMIDI, track, pat.stretch(stretch), time)
+        time += random.randint(1, 4)
         i += 1
-
-    #while time < length:
-    #    duration = float(random.randint(1, 4)) / scaleFac
-    #    midiPitch = getPitch("C","MAJ",random.choice(pitches))
-    #    MyMIDI.addNote(track, channel, midiPitch, time, duration, volume)
-    #    time += float(random.randint(1, 4)) / (scaleFac / float(2))
-    #    print "pitch: %s, dur: %s, time: %s" % (midiPitch, duration, time)
 
     # And write it to disk.
     binfile = open("test%s.mid" % k, 'wb')
