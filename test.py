@@ -33,13 +33,37 @@ class Pattern:
 
     def events(self):
         return self.events
-
-    def stretch(self, factor):
-        print "stretch by: %s" % factor
+    
+    def __copy(self):
         newEvents = []
         for ev in self.events:
-            newEvents.append(Event(ev.time*factor, ev.pitch, ev.velocity, ev.length*factor))
+            newEvents.append(Event(ev.time, ev.pitch, ev.velocity, ev.length))
         return Pattern(newEvents)
+    
+    def stretch(self, factor):
+        print "stretch by: %s" % factor
+        newPat = self.__copy()
+        for ev in newPat.events:
+            ev.time *= factor
+            ev.length *= factor
+        return newPat
+
+    # length of pattern in bars
+    def length(self):
+        if self.events == 0:
+            return 0
+        lastEvent = self.events[len(self.events)-1]
+        return lastEvent.time + lastEvent.length
+
+    def reverse(self):
+        newPat = self.__copy()
+        newPat.events.reverse()
+        return newPat
+
+    def splice(start, stop, step):
+        newPat = self.__copy()
+        newPat.events = newPat.events[start:stop:step]
+        return newPat
         
 
 def addPatternToTrack(midiFile, track, pattern, time):
@@ -70,12 +94,13 @@ for k in range(1,11):
         Event(2, random.randint(14, 21), random.randint(70, 110), 1) ])
 
     time = 0
-    i = 1
     while time < 11:
-        stretch = random.choice([0.25, 0.3333, 0.5, 0.75, 1, 2, 3, 4 ])
-        addPatternToTrack(MyMIDI, track, pat.stretch(stretch), time)
-        time += random.randint(1, 4)
-        i += 1
+        stretch = random.choice([0.25, 0.33, 0.5, 0.75, 1, 2 ])
+        newPat = pat.stretch(stretch)
+        #if random.choice([0, 1]) == 1:
+        #    newPat = newPat.reverse()
+        addPatternToTrack(MyMIDI, track, newPat, time)
+        time += newPat.length()
 
     # And write it to disk.
     binfile = open("test%s.mid" % k, 'wb')
