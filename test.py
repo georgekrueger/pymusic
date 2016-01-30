@@ -1,6 +1,8 @@
 #Import the library
 from midiutil.MidiFile import MIDIFile
 import random
+import subprocess
+import winsound
 
 key = ["D", "MAJ"]
 
@@ -74,36 +76,37 @@ def addPatternToTrack(midiFile, track, pattern, time):
 
 # ---- All code above here should be in a module ------------------------------------------------------
 
-for k in range(1,11):
-    # Create the MIDIFile Object
-    MyMIDI = MIDIFile(1)
+# Create the MIDIFile Object
+MyMIDI = MIDIFile(1)
 
-    # Add track name and tempo. The first argument to addTrackName and
-    # addTempo is the time to write the event.
-    track = 0
-    time = 0
-    MyMIDI.addTrackName(track,time,"Track")
-    MyMIDI.addTempo(track,time, 120)
+# Add track name and tempo. The first argument to addTrackName and
+# addTempo is the time to write the event.
+track = 0
+time = 0
+MyMIDI.addTrackName(track,time,"Track")
+MyMIDI.addTempo(track,time, 120)
 
-    # Add a note. addNote expects the following information:
-    pitches = [ random.randint(7, 14), random.randint(7, 14), random.randint(7, 14) ]
+pat = Pattern([
+    Event(0, random.randint(14, 21), random.randint(70, 110), 1),
+    Event(1, random.randint(14, 21), random.randint(70, 110), 1),
+    Event(2, random.randint(14, 21), random.randint(70, 110), 1) ])
 
-    pat = Pattern([
-        Event(0, random.randint(14, 21), random.randint(70, 110), 1),
-        Event(1, random.randint(14, 21), random.randint(70, 110), 1),
-        Event(2, random.randint(14, 21), random.randint(70, 110), 1) ])
+time = 0
+while time < 11:
+    stretch = random.choice([0.25, 0.33, 0.5, 0.75, 1, 2 ])
+    newPat = pat.stretch(stretch)
+    #if random.choice([0, 1]) == 1:
+    #    newPat = newPat.reverse()
+    addPatternToTrack(MyMIDI, track, newPat, time)
+    time += newPat.length()
 
-    time = 0
-    while time < 11:
-        stretch = random.choice([0.25, 0.33, 0.5, 0.75, 1, 2 ])
-        newPat = pat.stretch(stretch)
-        #if random.choice([0, 1]) == 1:
-        #    newPat = newPat.reverse()
-        addPatternToTrack(MyMIDI, track, newPat, time)
-        time += newPat.length()
+# And write it to disk.
+binfile = open("out.mid", 'wb')
+MyMIDI.writeFile(binfile)
+binfile.close()
 
-    # And write it to disk.
-    binfile = open("test%s.mid" % k, 'wb')
-    MyMIDI.writeFile(binfile)
-    binfile.close()
+subprocess.call(["C:\Users\GeorgeKrueger\Documents\GitHub\midirender\Builds\VisualStudio2015\Debug\midirender.exe",
+                 "out.mid", "out.wav"])
+
+winsound.PlaySound("out.wav", winsound.SND_FILENAME)    
 
