@@ -1,5 +1,5 @@
 #Import the library
-from midiutil.MidiFile import MIDIFile
+import MidiFile
 import random
 import subprocess
 import winsound
@@ -77,7 +77,7 @@ def addPatternToTrack(midiFile, track, pattern, time):
 # ---- All code above here should be in a module ------------------------------------------------------
 
 # Create the MIDIFile Object
-MyMIDI = MIDIFile(1)
+MyMIDI = MidiFile.MIDIFile(1)
 
 # Add track name and tempo. The first argument to addTrackName and
 # addTempo is the time to write the event.
@@ -87,9 +87,9 @@ MyMIDI.addTrackName(track,time,"Track")
 MyMIDI.addTempo(track,time, 120)
 
 pat = Pattern([
-    Event(0, random.randint(14, 21), random.randint(70, 110), 1),
-    Event(1, random.randint(14, 21), random.randint(70, 110), 1),
-    Event(2, random.randint(14, 21), random.randint(70, 110), 1) ])
+    Event(0, random.randint(0, 14), random.randint(50, 110), 1),
+    Event(1, random.randint(0, 14), random.randint(50, 110), 1),
+    Event(2, random.randint(0, 14), random.randint(50, 110), 1) ])
 
 time = 0
 while time < 11:
