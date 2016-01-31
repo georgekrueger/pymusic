@@ -86,11 +86,12 @@ time = 0
 MyMIDI.addTrackName(0,time,"Track 1")
 MyMIDI.addTempo(0,time, 120)
 MyMIDI.addInstrument(0, time, "C:\\VST\\FMMF.dll")
+MyMIDI.addProgramChange(0, 0, 0, 5);
 
 pat = Pattern([
     Event(0, random.randint(0, 14), random.randint(50, 110), 1),
     Event(1, random.randint(0, 14), random.randint(50, 110), 1),
-    Event(2, random.randint(0, 14), random.randint(50, 110), 1) ])
+    Event(2, random.randint(7, 14), random.randint(50, 110), 1) ])
 
 time = 0
 while time < 11:
