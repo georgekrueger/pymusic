@@ -83,8 +83,9 @@ MyMIDI = MidiFile.MIDIFile(1)
 # addTempo is the time to write the event.
 track = 0
 time = 0
-MyMIDI.addTrackName(track,time,"Track")
-MyMIDI.addTempo(track,time, 120)
+MyMIDI.addTrackName(0,time,"Track 1")
+MyMIDI.addTempo(0,time, 120)
+MyMIDI.addInstrument(0, time, "C:\\VST\\FMMF.dll")
 
 pat = Pattern([
     Event(0, random.randint(0, 14), random.randint(50, 110), 1),
