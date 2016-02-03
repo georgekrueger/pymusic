@@ -85,7 +85,9 @@ track = 0
 time = 0
 MyMIDI.addTrackName(0,time,"Track 1")
 MyMIDI.addTempo(0,time, 120)
-MyMIDI.addInstrument(0, time, "C:\\VST\\FMMF.dll")
+#MyMIDI.addInstrument(0, time, "C:\\VST\\FMMF.dll")
+#MyMIDI.addInstrument(0, time, "C:\\VST\\dirty_harry_1_1.dll")
+MyMIDI.addInstrument(0, time, "C:\\VST\\ComboF.dll")
 MyMIDI.addProgramChange(0, 0, 0, 5);
 
 pat = Pattern([
