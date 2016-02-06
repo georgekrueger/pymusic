@@ -77,18 +77,18 @@ def addPatternToTrack(midiFile, track, pattern, time):
 # ---- All code above here should be in a module ------------------------------------------------------
 
 # Create the MIDIFile Object
-MyMIDI = MidiFile.MIDIFile(1)
-
 # Add track name and tempo. The first argument to addTrackName and
 # addTempo is the time to write the event.
+print "program %s" % program
 track = 0
 time = 0
+MyMIDI = MidiFile.MIDIFile(1)
 MyMIDI.addTrackName(0,time,"Track 1")
 MyMIDI.addTempo(0,time, 120)
 #MyMIDI.addInstrument(0, time, "C:\\VST\\FMMF.dll")
 #MyMIDI.addInstrument(0, time, "C:\\VST\\dirty_harry_1_1.dll")
-MyMIDI.addInstrument(0, time, "C:\\VST\\ComboF.dll")
-MyMIDI.addProgramChange(0, 0, 0, 5);
+MyMIDI.addInstrument(0, time, "C:\\VST\\helm.dll")
+MyMIDI.addProgramChange(0, 0, 0, 7);
 
 pat = Pattern([
     Event(0, random.randint(0, 14), random.randint(50, 110), 1),
