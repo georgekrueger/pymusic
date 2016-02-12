@@ -79,7 +79,6 @@ def addPatternToTrack(midiFile, track, pattern, time):
 # Create the MIDIFile Object
 # Add track name and tempo. The first argument to addTrackName and
 # addTempo is the time to write the event.
-print "program %s" % program
 track = 0
 time = 0
 MyMIDI = MidiFile.MIDIFile(1)
@@ -88,21 +87,15 @@ MyMIDI.addTempo(0,time, 120)
 #MyMIDI.addInstrument(0, time, "C:\\VST\\FMMF.dll")
 #MyMIDI.addInstrument(0, time, "C:\\VST\\dirty_harry_1_1.dll")
 MyMIDI.addInstrument(0, time, "C:\\VST\\helm.dll")
-MyMIDI.addProgramChange(0, 0, 0, 7);
+MyMIDI.addProgramChange(0, 0, 0, 6);
 
-pat = Pattern([
-    Event(0, random.randint(0, 14), random.randint(50, 110), 1),
-    Event(1, random.randint(0, 14), random.randint(50, 110), 1),
-    Event(2, random.randint(7, 14), random.randint(50, 110), 1) ])
+events = []
+for i in range(0, 16):
+    events.append(Event(i, 7+i, 100, 1))
 
-time = 0
-while time < 11:
-    stretch = random.choice([0.25, 0.33, 0.5, 0.75, 1, 2 ])
-    newPat = pat.stretch(stretch)
-    #if random.choice([0, 1]) == 1:
-    #    newPat = newPat.reverse()
-    addPatternToTrack(MyMIDI, track, newPat, time)
-    time += newPat.length()
+pat = Pattern(events)
+
+addPatternToTrack(MyMIDI, track, pat, 0)
 
 # And write it to disk.
 binfile = open("out.mid", 'wb')
