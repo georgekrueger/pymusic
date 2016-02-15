@@ -87,10 +87,11 @@ MyMIDI.addTempo(0,time, 120)
 #MyMIDI.addInstrument(0, time, "C:\\VST\\FMMF.dll")
 #MyMIDI.addInstrument(0, time, "C:\\VST\\dirty_harry_1_1.dll")
 MyMIDI.addInstrument(0, time, "C:\\VST\\helm.dll")
-MyMIDI.addProgramChange(0, 0, 0, 6);
+MyMIDI.addProgramChange(0, 0, 0, 1);
 
 events = []
-for i in range(0, 16):
+for i in range(1, 5):
+    print i
     events.append(Event(i, 7+i, 100, 1))
 
 pat = Pattern(events)
