@@ -82,7 +82,7 @@ class GenericEvent():
             if self.tempo != other.tempo:
                 return False
         if self.type == 'instrument':
-            if self.instrument != other.instrument:
+            if self.name != other.name:
                 return False
         if self.type == 'programChange':
             if self.programNumber != other.programNumber or self.channel != other.channel:
@@ -169,11 +169,11 @@ class MIDITrack:
     class instrument(GenericEvent):
         '''A class that encapsulates an instrument meta-event
         '''
-        def __init__(self,time,instrument):
+        def __init__(self,time,name):
             
             GenericEvent.__init__(self,time)
             self.type = 'instrument'
-            self.instrument = instrument
+            self.name = name
             
     class programChange(GenericEvent):
         '''A class that encapsulates a program change event.
@@ -260,11 +260,11 @@ class MIDITrack:
         '''
         self.eventList.append(MIDITrack.tempo(time,tempo))
 
-    def addInstrument(self,time,instrument):
+    def addInstrument(self,time,name):
         '''
         Add an instrument (or set) event.
         '''
-        self.eventList.append(MIDITrack.instrument(time,instrument))
+        self.eventList.append(MIDITrack.instrument(time,name))
         
     def addSysEx(self,time,manID, payload):
         '''
@@ -349,7 +349,7 @@ class MIDITrack:
                 event = MIDIEvent()
                 event.type = "Instrument"
                 event.time = thing.time * TICKSPERBEAT
-                event.instrument = thing.instrument
+                event.name = thing.name
                 event.ord = 3
                 self.MIDIEventList.append(event)
 
@@ -541,16 +541,16 @@ class MIDITrack:
             elif event.type == "Instrument":
                 code = 0xFF
                 subcode = 0x04
-                #instrNamePacked = struct.pack('>s', event.instrument)
+                #instrNamePacked = struct.pack('>s', event.name)
                 varTime = writeVarLength(event.time)
                 for timeByte in varTime:
                     self.MIDIdata = self.MIDIdata + struct.pack('>B',timeByte)
                 self.MIDIdata = self.MIDIdata + struct.pack('>B',code)
                 self.MIDIdata = self.MIDIdata + struct.pack('>B',subcode)
-                varInstrNameSize = writeVarLength(sys.getsizeof(event.instrument))
+                varInstrNameSize = writeVarLength(sys.getsizeof(event.name))
                 for byte in varInstrNameSize:
                     self.MIDIdata = self.MIDIdata + struct.pack('>B', byte)
-                for char in event.instrument:
+                for char in event.name:
                     self.MIDIdata = self.MIDIdata + struct.pack('>c', char)
             elif event.type == 'ProgramChange':
                 code = 0xC << 4 | event.channel
@@ -805,19 +805,19 @@ class MIDIFile:
         """
         self.tracks[track].addTempo(time,tempo)
 
-    def addInstrument(self, track, time, instrument):
+    def addInstrument(self, track, time, name):
         """
         Add an instrument event.
         
         Use:
-            MyMIDI.addInstrument(track, time, instrument)
+            MyMIDI.addInstrument(track, time, name)
             
         Arguments:
             track: The track to which the event is added. [Integer, 0-127].
             time: The time at which the event is added, in beats. [Float].
-            instrument: The instrument name [string]
+            name: The instrument name [string]
         """
-        self.tracks[track].addInstrument(time, instrument)
+        self.tracks[track].addInstrument(time, name)
         
     def addProgramChange(self,track, channel, time, program):
         """

@@ -3,6 +3,7 @@ import MidiFile
 import random
 import subprocess
 import winsound
+import os
 
 key = ["D", "MAJ"]
 
@@ -79,24 +80,25 @@ def addPatternToTrack(midiFile, track, pattern, time):
 # Create the MIDIFile Object
 # Add track name and tempo. The first argument to addTrackName and
 # addTempo is the time to write the event.
-track = 0
-time = 0
 MyMIDI = MidiFile.MIDIFile(1)
-MyMIDI.addTrackName(0,time,"Track 1")
-MyMIDI.addTempo(0,time, 120)
+MyMIDI.addTrackName(0,0,"Track 1")
+MyMIDI.addTempo(0,0, 120)
 #MyMIDI.addInstrument(0, time, "C:\\VST\\FMMF.dll")
 #MyMIDI.addInstrument(0, time, "C:\\VST\\dirty_harry_1_1.dll")
-MyMIDI.addInstrument(0, time, "C:\\VST\\helm.dll")
-MyMIDI.addProgramChange(0, 0, 0, 1);
+MyMIDI.addInstrument(0, 0, "C:\\VST\\helm.dll")
+#MyMIDI.addProgramChange(0, 0, 0, 1)
 
-events = []
-for i in range(1, 5):
-    print i
-    events.append(Event(i, 7+i, 100, 1))
+MyMIDI.addNote(0, 0, 60, 0, 1, 100)
+MyMIDI.addNote(0, 0, 61, 0, 1, 100)
 
-pat = Pattern(events)
+#events = []
+#for i in range(0, 4):
+#    MyMIDI.addNote(track, 0, 40+i, i, 1, 100)
+    #events.append(Event(i, 7+i, 100, 1))
 
-addPatternToTrack(MyMIDI, track, pat, 0)
+#pat = Pattern(events)
+
+#addPatternToTrack(MyMIDI, track, pat, 0)
 
 # And write it to disk.
 binfile = open("out.mid", 'wb')
@@ -106,5 +108,7 @@ binfile.close()
 subprocess.call(["C:\Users\GeorgeKrueger\Documents\GitHub\midirender\Builds\VisualStudio2015\Debug\midirender.exe",
                  "out.mid", "out.wav"])
 
-winsound.PlaySound("out.wav", winsound.SND_FILENAME)    
+subprocess.call(["C:\\Python27\\python.exe", "mididump.py", "out.mid"])
+
+winsound.PlaySound("out.wav", winsound.SND_FILENAME)
 
