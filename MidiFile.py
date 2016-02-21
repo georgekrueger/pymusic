@@ -539,9 +539,9 @@ class MIDITrack:
                 self.MIDIdata = self.MIDIdata + struct.pack('>B', 0x03) # Data length: 3
                 self.MIDIdata = self.MIDIdata + threebite
             elif event.type == "Instrument":
+                #print "nothing"
                 code = 0xFF
                 subcode = 0x04
-                #instrNamePacked = struct.pack('>s', event.name)
                 varTime = writeVarLength(event.time)
                 for timeByte in varTime:
                     self.MIDIdata = self.MIDIdata + struct.pack('>B',timeByte)

@@ -85,11 +85,12 @@ MyMIDI.addTrackName(0,0,"Track 1")
 MyMIDI.addTempo(0,0, 120)
 #MyMIDI.addInstrument(0, time, "C:\\VST\\FMMF.dll")
 #MyMIDI.addInstrument(0, time, "C:\\VST\\dirty_harry_1_1.dll")
-MyMIDI.addInstrument(0, 0, "C:\\VST\\helm.dll")
+#MyMIDI.addInstrument(0, 0, "C:\\VST\\helm.dll")
 #MyMIDI.addProgramChange(0, 0, 0, 1)
 
 MyMIDI.addNote(0, 0, 60, 0, 1, 100)
-MyMIDI.addNote(0, 0, 61, 0, 1, 100)
+MyMIDI.addNote(0, 0, 61, 1, 1, 100)
+MyMIDI.addNote(0, 0, 62, 2, 1, 100)
 
 #events = []
 #for i in range(0, 4):
@@ -108,7 +109,6 @@ binfile.close()
 subprocess.call(["C:\Users\GeorgeKrueger\Documents\GitHub\midirender\Builds\VisualStudio2015\Debug\midirender.exe",
                  "out.mid", "out.wav"])
 
-subprocess.call(["C:\\Python27\\python.exe", "mididump.py", "out.mid"])
 
 winsound.PlaySound("out.wav", winsound.SND_FILENAME)
 
