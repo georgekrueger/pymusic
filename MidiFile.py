@@ -539,7 +539,6 @@ class MIDITrack:
                 self.MIDIdata = self.MIDIdata + struct.pack('>B', 0x03) # Data length: 3
                 self.MIDIdata = self.MIDIdata + threebite
             elif event.type == "Instrument":
-                #print "nothing"
                 code = 0xFF
                 subcode = 0x04
                 varTime = writeVarLength(event.time)
@@ -547,11 +546,14 @@ class MIDITrack:
                     self.MIDIdata = self.MIDIdata + struct.pack('>B',timeByte)
                 self.MIDIdata = self.MIDIdata + struct.pack('>B',code)
                 self.MIDIdata = self.MIDIdata + struct.pack('>B',subcode)
-                varInstrNameSize = writeVarLength(sys.getsizeof(event.name))
-                for byte in varInstrNameSize:
-                    self.MIDIdata = self.MIDIdata + struct.pack('>B', byte)
+                varInstrNameSize = writeVarLength(len(event.name))
+                print "'%s'" % event.name
+                print "nameSize: %s, varInstrNameSize: %s" % (sys.getsizeof(event.name), varInstrNameSize)
+                for sizeByte in varInstrNameSize:
+                   self.MIDIdata = self.MIDIdata + struct.pack('>B', sizeByte)
                 for char in event.name:
-                    self.MIDIdata = self.MIDIdata + struct.pack('>c', char)
+                   self.MIDIdata = self.MIDIdata + struct.pack('>c', char)
+                #self.MIDIdata = self.MIDIdata + struct.pack('>s', event.name)
             elif event.type == 'ProgramChange':
                 code = 0xC << 4 | event.channel
                 varTime = writeVarLength(event.time)

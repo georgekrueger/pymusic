@@ -85,7 +85,7 @@ MyMIDI.addTrackName(0,0,"Track 1")
 MyMIDI.addTempo(0,0, 120)
 #MyMIDI.addInstrument(0, time, "C:\\VST\\FMMF.dll")
 #MyMIDI.addInstrument(0, time, "C:\\VST\\dirty_harry_1_1.dll")
-#MyMIDI.addInstrument(0, 0, "C:\\VST\\helm.dll")
+MyMIDI.addInstrument(0, 0, "C:\\VST\\helm.dll")
 #MyMIDI.addProgramChange(0, 0, 0, 1)
 
 MyMIDI.addNote(0, 0, 60, 0, 1, 100)
